@@ -7,7 +7,7 @@ export default function TicketOptions({totalPrice}) {
   console.log(userTicket);
   return (
     <>
-      {userTicket.hotelPrice === 0 ? (
+      {userTicket.hotelPrice === null ? (
         <RerserveTicket />
       ) : (
         <OptionsContainer>

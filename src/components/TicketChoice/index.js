@@ -16,8 +16,8 @@ export default function TicketChoice() {
   //   });
 
   const tickets = [
-    {id: 1, name: 'Presencial', price: '250', hotelPrice: 350},
-    {id: 2, name: 'Online', price: '100', hotelPrice: 0},
+    {id: 1, name: 'Presencial', price: 250, hotelPrice: 350},
+    {id: 2, name: 'Online', price: 100, hotelPrice: 0},
   ];
   const [userTicket, setUserTicket] = useState(null);
   const [hotelPrice, setHotelPrice] = useState(null);
