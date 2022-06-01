@@ -5,6 +5,7 @@ export default TicketChoiceContext;
 
 export function TicketProvider({ children }) {
   const [ticketInformation, setTicketInformation] = useState(null);
+  console.log(ticketInformation);
 
   return (
     <TicketChoiceContext.Provider value={{ ticketInformation, setTicketInformation }}>

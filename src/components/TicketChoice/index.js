@@ -1,37 +1,75 @@
 /*eslint-disable*/
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
+import TicketChoiceContext from '../../contexts/TicketChoiceContext';
+import useEnrollment from '../../hooks/api/useEnrollment';
 
 import useGetTicket from '../../hooks/api/useTicket';
+import MissingStep from '../MissingStep';
 import HotelOptions from './HotelOptions';
+import ReserveTicket from './ReserveTicket';
 import TicketOptions from './TicketOptions';
 
 export default function TicketChoice() {
-  //   const {tickets, ticketsLoading, ticketsError} = useGetTicket();
+  const { tickets, ticketsLoading, ticketsError } = useGetTicket();
+  const { setTicketInformation } = useContext(TicketChoiceContext);
 
-  //   useEffect(() => {
-  //     if (tickets) {
-  //       console.log('tickets');
-  //     }
-  //   });
+  useEffect(() => {
+    if (tickets) {
+      console.log(tickets);
+    }
+  });
 
-  const tickets = [
-    {id: 1, name: 'Presencial', price: 250, hotelPrice: 350},
-    {id: 2, name: 'Online', price: 100, hotelPrice: 0},
-  ];
   const [userTicket, setUserTicket] = useState(null);
-  const [hotelPrice, setHotelPrice] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  console.log(hotelPrice);
+  const { enrollment } = useEnrollment();
+  const [withHotel, setWithHotel] = useState(null);
+  function handleChoice(hotel, price) {
+    setWithHotel(hotel);
+    const sumTicketHotel = parseInt(userTicket.price) + parseInt(price);
+    setTotalPrice(sumTicketHotel);
+  }
+
+  function handleContext() {
+    const data = {
+      name: userTicket.name || userTicket.Ticket.description,
+      totalPrice,
+      withHotel,
+    };
+    setTicketInformation(data);
+  }
+
   return (
-    <Container>
-      <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} />
-      {userTicket === null ? (
-        <></>
+    <>
+      {enrollment ? (
+        <Container>
+          <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} />
+          {userTicket === null ? (
+            <></>
+          ) : (
+            <HotelOptions
+              tickets={tickets}
+              totalPrice={totalPrice}
+              setTotalPrice={setTotalPrice}
+              userTicket={userTicket}
+              withHotel={withHotel}
+              handleChoice={handleChoice}
+            />
+          )}
+
+          {userTicket?.Ticket.isVirtual === true ? (
+            <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
+          ) : (
+            withHotel === false ||
+            (withHotel === true && (
+              <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
+            ))
+          )}
+        </Container>
       ) : (
-        <HotelOptions tickets={tickets} hotelPrice={hotelPrice} setHotelPrice={setHotelPrice} userTicket={userTicket} />
+        <MissingStep message={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'} />
       )}
-    </Container>
+    </>
   );
 }
 
@@ -63,7 +101,7 @@ export const Box = styled.div`
 `;
 
 export const OptionTitle = styled.span`
-  font-size: 19px;
+  font-size: 16px;
   weight: 400;
   line-height: 18.75px;
   color: #454545;
@@ -76,4 +114,11 @@ export const OptionPrice = styled.span`
   line-height: 16.41px;
   color: #898989;
   text-align: center;
+`;
+
+export const Button = styled.button`
+  height: 37px;
+  width: 162px;
+  border-radius: 4px;
+  background-color: #e0e0e0;
 `;

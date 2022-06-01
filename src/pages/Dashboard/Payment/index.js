@@ -3,6 +3,6 @@ import TicketChoiceContext from '../../../contexts/TicketChoiceContext';
 import { useContext } from 'react';
 
 export default function Payment() {
-  const { ticketTotalPrice } = useContext(TicketChoiceContext);
-  return <>{ticketTotalPrice === null ? <TicketChoice /> : <h1>Hello</h1>}</>;
+  const { ticketInformation } = useContext(TicketChoiceContext);
+  return <>{ticketInformation ? <h1>hello</h1> : <TicketChoice />}</>;
 }
