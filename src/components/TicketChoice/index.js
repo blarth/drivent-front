@@ -14,6 +14,8 @@ export default function TicketChoice() {
   const { tickets, ticketsLoading, ticketsError } = useGetTicket();
   const { setTicketInformation } = useContext(TicketChoiceContext);
 
+  console.log('get tickets ~> ', tickets)
+
   useEffect(() => {
     if (tickets) {
       console.log(tickets);
@@ -22,8 +24,9 @@ export default function TicketChoice() {
 
   const [userTicket, setUserTicket] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
-  const { enrollment } = useEnrollment();
+  const { enrollment, enrollmentLoading } = useEnrollment();
   const [withHotel, setWithHotel] = useState(null);
+
   function handleChoice(hotel, price) {
     setWithHotel(hotel);
     const sumTicketHotel = parseInt(userTicket.price) + parseInt(price);
@@ -41,34 +44,36 @@ export default function TicketChoice() {
 
   return (
     <>
-      {enrollment ? (
-        <Container>
-          <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} />
-          {userTicket === null ? (
-            <></>
-          ) : (
-            <HotelOptions
-              tickets={tickets}
-              totalPrice={totalPrice}
-              setTotalPrice={setTotalPrice}
-              userTicket={userTicket}
-              withHotel={withHotel}
-              handleChoice={handleChoice}
-            />
-          )}
+      {enrollmentLoading
+        ? <h1>Carregando...</h1>
+        : enrollment ? (
+          <Container>
+            <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} ticketsLoading={ticketsLoading} />
+            {userTicket === null ? (
+              <></>
+            ) : (
+              <HotelOptions
+                tickets={tickets}
+                totalPrice={totalPrice}
+                setTotalPrice={setTotalPrice}
+                userTicket={userTicket}
+                withHotel={withHotel}
+                handleChoice={handleChoice}
+              />
+            )}
 
-          {userTicket?.Ticket.isVirtual === true ? (
-            <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
-          ) : (
-            withHotel === false ||
-            (withHotel === true && (
+            {userTicket?.Ticket.isVirtual === true ? (
               <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
-            ))
-          )}
-        </Container>
-      ) : (
-        <MissingStep message={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'} />
-      )}
+            ) : (
+              withHotel === false ||
+              (withHotel === true && (
+                <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
+              ))
+            )}
+          </Container>
+        ) : (
+          <MissingStep message={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'} />
+        )}
     </>
   );
 }
@@ -76,12 +81,12 @@ export default function TicketChoice() {
 const Container = styled.main`
   display: flex;
   flex-direction: column;
-  row-gap: 44px;
 `;
 export const OptionsContainer = styled.div`
   display: flex;
   height: 145px;
   gap: 24px;
+  margin-bottom: 44px;
 `;
 
 export const Box = styled.div`
@@ -102,7 +107,7 @@ export const Box = styled.div`
 
 export const OptionTitle = styled.span`
   font-size: 16px;
-  weight: 400;
+  font-weight: 400;
   line-height: 18.75px;
   color: #454545;
   text-align: center;
@@ -110,7 +115,7 @@ export const OptionTitle = styled.span`
 
 export const OptionPrice = styled.span`
   font-size: 16px;
-  weight: 400;
+  font-weight: 400;
   line-height: 16.41px;
   color: #898989;
   text-align: center;
