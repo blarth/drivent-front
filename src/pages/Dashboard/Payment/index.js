@@ -7,11 +7,18 @@ import { useContext } from 'react';
 
 export default function Payment() {
   const { ticketInformation } = useContext(TicketChoiceContext);
-  return <>{ticketInformation
-    ? <>
-      <Title description="Ingresso e Pagamento" />
-      <TicketDescription />
-      <CardInsertionForm />
+  console.log(ticketInformation);
+  return (
+    <>
+      {ticketInformation ? (
+        <>
+          <Title description="Ingresso e Pagamento" />
+          <TicketDescription />
+          <CardInsertionForm />
+        </>
+      ) : (
+        <TicketChoice />
+      )}
     </>
-    : <TicketChoice />}</>;
+  );
 }

@@ -1,6 +1,5 @@
 import Subtitle from '../../Dashboard/Subtitle';
-import { Box, CardInfos, Form } from './style';
-import Cards from 'react-credit-cards';
+import { Box, CardInfos, Form, Card } from './style';
 import 'react-credit-cards/es/styles-compiled.css';
 import { useState } from 'react';
 import usePayment from '../../../hooks/api/usePayment';
@@ -30,18 +29,20 @@ export default function CardInsertionForm() {
       <Box>
         <Subtitle description={'Pagamento'} />
         <CardInfos>
-          <Cards cvc={state.cvc} expiry={state.expiry} focused={state.focus} name={state.name} number={state.number} />
+          <Card cvc={state.cvc} expiry={state.expiry} focused={state.focus} name={state.name} number={state.number} />
           <Form>
-            <input
-              required
-              type="tel"
-              name="number"
-              placeholder="Card Number"
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              maxLength="16"
-            />
-            <p>E.g.: 49..., 51..., 36..., 37...</p>
+            <div className="column">
+              <input
+                required
+                type="tel"
+                name="number"
+                placeholder="Card Number"
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                maxLength="16"
+              />
+              <p>E.g.: 49..., 51..., 36..., 37...</p>
+            </div>
             <input
               required
               type="text"
@@ -50,7 +51,7 @@ export default function CardInsertionForm() {
               onChange={handleInputChange}
               onFocus={handleInputFocus}
             />
-            <div>
+            <div className="line">
               <input
                 required
                 type="tel"
