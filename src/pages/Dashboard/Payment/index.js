@@ -8,7 +8,7 @@ export default function Payment() {
   const { ticketInformation } = useContext(TicketChoiceContext);
   return <>{ticketInformation
     ? <>
-      <Title description="Ingresso e pagamento" />
+      <Title description="Ingresso e Pagamento" />
       <TicketDescription />
     </>
     : <TicketChoice />}</>;

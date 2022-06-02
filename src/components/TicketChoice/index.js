@@ -26,6 +26,7 @@ export default function TicketChoice() {
   const [totalPrice, setTotalPrice] = useState(0);
   const { enrollment, enrollmentLoading } = useEnrollment();
   const [withHotel, setWithHotel] = useState(null);
+
   function handleChoice(hotel, price) {
     setWithHotel(hotel);
     const sumTicketHotel = parseInt(userTicket.price) + parseInt(price);
