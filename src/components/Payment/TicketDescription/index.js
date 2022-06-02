@@ -1,19 +1,23 @@
 import { Box, Description, Price } from './style';
 import Subtitle from '../../Dashboard/Subtitle';
+import { useContext } from 'react';
+import TicketChoiceContext from '../../../contexts/TicketChoiceContext';
 
 export default function TicketDescription() {
-  const type = 'Presencial';
-  const hotel = 'Com Hotel';
-  const price = '200,00';
+  const { ticketInformation: { name, totalPrice, withHotel } } = useContext(TicketChoiceContext);
+
+  function isWithHotel() {
+    return withHotel ? 'Com Hotel' : 'Sem Hotel';
+  }
 
   return (
     <>
       <Subtitle description="Ingresso escolhido" />
       <Box>
         <Description>
-          {type} + {hotel}
+          {name} + {isWithHotel()}
         </Description>
-        <Price>R${price}</Price>
+        <Price>R${totalPrice}</Price>
       </Box>
     </>
   );
