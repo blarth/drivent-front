@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
