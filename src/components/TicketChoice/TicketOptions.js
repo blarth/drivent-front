@@ -15,7 +15,7 @@ export default function TicketOptions({
   function handleChoice(ticket) {
     setTotalPrice(ticket.price);
     setUserTicket(ticket);
-    console.log(ticket);
+
     if (ticket.Ticket.isVirtual) {
       setWithHotel(false);
     }
