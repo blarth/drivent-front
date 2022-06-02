@@ -14,14 +14,6 @@ export default function TicketChoice() {
   const { tickets, ticketsLoading, ticketsError } = useGetTicket();
   const { setTicketInformation } = useContext(TicketChoiceContext);
 
-  console.log('get tickets ~> ', tickets)
-
-  useEffect(() => {
-    if (tickets) {
-      console.log(tickets);
-    }
-  });
-
   const [userTicket, setUserTicket] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const { enrollment, enrollmentLoading } = useEnrollment();
@@ -44,36 +36,43 @@ export default function TicketChoice() {
 
   return (
     <>
-      {enrollmentLoading
-        ? <h1>Carregando...</h1>
-        : enrollment ? (
-          <Container>
-            <TicketOptions tickets={tickets} userTicket={userTicket} setUserTicket={setUserTicket} ticketsLoading={ticketsLoading} />
-            {userTicket === null ? (
-              <></>
-            ) : (
-              <HotelOptions
-                tickets={tickets}
-                totalPrice={totalPrice}
-                setTotalPrice={setTotalPrice}
-                userTicket={userTicket}
-                withHotel={withHotel}
-                handleChoice={handleChoice}
-              />
-            )}
-
-            {userTicket?.Ticket.isVirtual === true ? (
-              <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
-            ) : (
-              withHotel === false ||
-              (withHotel === true && (
-                <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
-              ))
-            )}
-          </Container>
-        ) : (
-          <MissingStep message={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'} />
-        )}
+      {enrollmentLoading ? (
+        <h1>Carregando...</h1>
+      ) : enrollment ? (
+        <Container>
+          <TicketOptions
+            setTotalPrice={setTotalPrice}
+            tickets={tickets}
+            userTicket={userTicket}
+            setUserTicket={setUserTicket}
+            ticketsLoading={ticketsLoading}
+            setWithHotel={setWithHotel}
+          />
+          {userTicket === null ? (
+            <></>
+          ) : userTicket?.Ticket.isVirtual === false ? (
+            <HotelOptions
+              tickets={tickets}
+              totalPrice={totalPrice}
+              setTotalPrice={setTotalPrice}
+              userTicket={userTicket}
+              withHotel={withHotel}
+              handleChoice={handleChoice}
+            />
+          ) : (
+            <></>
+          )}
+          {userTicket?.Ticket.isVirtual === true ? (
+            <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
+          ) : typeof withHotel === 'boolean' ? (
+            <ReserveTicket totalPrice={totalPrice} userTicket={userTicket} handleContext={handleContext} />
+          ) : (
+            <></>
+          )}
+        </Container>
+      ) : (
+        <MissingStep message={'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso'} />
+      )}
     </>
   );
 }
