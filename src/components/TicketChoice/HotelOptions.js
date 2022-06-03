@@ -14,11 +14,11 @@ export default function HotelOptions({ totalPrice, userTicket, withHotel, handle
           <OptionPrice>+ R$ 0</OptionPrice>
         </Box>
         <Box
-          onClick={(e) => handleChoice(true, userTicket.hotelPrice)}
+          onClick={(e) => handleChoice(true, userTicket.Event.hotelPrice)}
           active={withHotel === null ? false : withHotel ? true : false}
         >
           <OptionTitle>Com Hotel</OptionTitle>
-          <OptionPrice>+ R${userTicket.hotelPrice}</OptionPrice>
+          <OptionPrice>+ R${userTicket.Event.hotelPrice}</OptionPrice>
         </Box>
       </OptionsContainer>
     </>
