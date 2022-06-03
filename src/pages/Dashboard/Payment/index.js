@@ -7,7 +7,7 @@ import { useContext } from 'react';
 
 export default function Payment() {
   const { ticketInformation } = useContext(TicketChoiceContext);
-  console.log(ticketInformation);
+
   return (
     <>
       {ticketInformation ? (

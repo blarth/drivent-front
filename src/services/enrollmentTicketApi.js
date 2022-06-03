@@ -1,7 +1,7 @@
 import api from './api';
 
-export async function insertPayment(body, token) {
-  const response = await api.post('/payments', body, {
+export async function purchase(body, token) {
+  const response = await api.post('/enrollment-tickets', body, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

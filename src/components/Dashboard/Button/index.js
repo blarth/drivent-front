@@ -1,5 +1,5 @@
 import { Button } from './style';
 
-export default function ButtonBox({ description }) {
-  return <Button>{description}</Button>;
+export default function ButtonBox({ description, click }) {
+  return <Button onClick={click}>{description}</Button>;
 }

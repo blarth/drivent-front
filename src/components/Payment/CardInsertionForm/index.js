@@ -2,10 +2,19 @@ import Subtitle from '../../Dashboard/Subtitle';
 import { Box, CardInfos, Form, Card } from './style';
 import 'react-credit-cards/es/styles-compiled.css';
 import { useState } from 'react';
-import usePayment from '../../../hooks/api/usePayment';
+import useEnrollmentTicket from '../../../hooks/api/useEnrollmentTicket';
 import ButtonBox from '../../Dashboard/Button';
+import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import TicketChoiceContext from '../../../contexts/TicketChoiceContext';
 
 export default function CardInsertionForm() {
+  const {
+    ticketInformation: { name, totalPrice, withHotel, id: eventTicketId },
+  } = useContext(TicketChoiceContext);
+
+  const { getEnrollmentTicket } = useEnrollmentTicket({ eventTicketId, withHotel }, false);
+
   const [state, setState] = useState({
     cvc: '',
     expiry: '',
@@ -22,6 +31,21 @@ export default function CardInsertionForm() {
     const { name, value } = e.target;
 
     setState({ ...state, [name]: value });
+  }
+
+  async function submit(event) {
+    event.preventDefault();
+
+    try {
+      const a = await getEnrollmentTicket({ eventTicketId, withHotel }, true);
+      toast('Compra realizada com sucesso!');
+    } catch (err) {
+      if (err.response.data.message) {
+        toast(err.response.data.message);
+      } else {
+        toast('Tente novamente!');
+      }
+    }
   }
 
   return (
@@ -74,7 +98,7 @@ export default function CardInsertionForm() {
           </Form>
         </CardInfos>
       </Box>
-      <ButtonBox description={'FINALIZAR PAGAMENTO'} />
+      <ButtonBox description={'FINALIZAR PAGAMENTO'} click={submit} />
     </>
   );
 }
