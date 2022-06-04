@@ -7,11 +7,14 @@ import ButtonBox from '../../Dashboard/Button';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import TicketChoiceContext from '../../../contexts/TicketChoiceContext';
+import PurchasedTicketContext from '../../../contexts/PurchasedTicketContext';
 
 export default function CardInsertionForm() {
   const {
-    ticketInformation: { name, totalPrice, withHotel, id: eventTicketId },
+    ticketInformation: { withHotel, id: eventTicketId },
   } = useContext(TicketChoiceContext);
+
+  const { saveTicketPurchasedInformation } = useContext(PurchasedTicketContext);
 
   const { getEnrollmentTicket } = useEnrollmentTicket({ eventTicketId, withHotel }, false);
 
@@ -37,7 +40,8 @@ export default function CardInsertionForm() {
     event.preventDefault();
 
     try {
-      const a = await getEnrollmentTicket({ eventTicketId, withHotel }, true);
+      const response = await getEnrollmentTicket({ eventTicketId, withHotel }, true);
+      saveTicketPurchasedInformation(response);
       toast('Compra realizada com sucesso!');
     } catch (err) {
       if (err.response.data.message) {
