@@ -28,6 +28,7 @@ export default function TicketChoice() {
 
   function handleContext() {
     const data = {
+      id: userTicket.id,
       name: userTicket.name || userTicket.Ticket.description,
       totalPrice,
       withHotel,

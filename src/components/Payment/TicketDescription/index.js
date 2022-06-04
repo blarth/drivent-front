@@ -4,7 +4,9 @@ import { useContext } from 'react';
 import TicketChoiceContext from '../../../contexts/TicketChoiceContext';
 
 export default function TicketDescription() {
-  const { ticketInformation: { name, totalPrice, withHotel } } = useContext(TicketChoiceContext);
+  const {
+    ticketInformation: { name, totalPrice, withHotel },
+  } = useContext(TicketChoiceContext);
 
   function isWithHotel() {
     return withHotel ? 'Com Hotel' : 'Sem Hotel';
