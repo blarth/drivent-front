@@ -17,7 +17,9 @@ export function PurchasedTicketProvider({ children }) {
   }
 
   return (
-    <PurchasedTicketContext.Provider value={{ ticketPurchasedInformationStorage, saveTicketPurchasedInformation }}>
+    <PurchasedTicketContext.Provider
+      value={{ ticketPurchasedInformationStorage, saveTicketPurchasedInformation, ticketPurchasedInformation }}
+    >
       {children}
     </PurchasedTicketContext.Provider>
   );
